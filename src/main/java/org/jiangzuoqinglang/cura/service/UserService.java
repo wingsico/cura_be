@@ -1,11 +1,15 @@
 package org.jiangzuoqinglang.cura.service;
 
-import org.jiangzuoqinglang.cura.entity.UserBasic;
+import org.jiangzuoqinglang.cura.entity.User;
 
 public interface UserService {
     /**
      * 进行用户注册
      *
      */
-    UserBasic register(UserBasic userBasic);
+    Boolean register(String nickname, String password, String phone);
+    String generateToken(User user);
+    User verifyToken(String token);
+    User checkUser(Integer cura_number, String password);
+    Object getUser(Integer cura_number);
 }
