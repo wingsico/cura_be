@@ -33,7 +33,7 @@ public class UserServiceImpl implements UserService {
      * @return Boolean
      */
     @Override
-    public Boolean register(String nickname, String password, String phone) {
+    public User register(String nickname, String password, String phone) {
         String salt = BCrypt.gensalt();
         String pwdHash = BCrypt.hashpw(password, salt);
 
@@ -41,9 +41,8 @@ public class UserServiceImpl implements UserService {
         user.setNickname(nickname);
         user.setPhone(phone);
         user.setPassword(pwdHash);
-
         userDao.save(user);
-        return true;
+        return user;
     }
 
     /**
@@ -81,7 +80,7 @@ public class UserServiceImpl implements UserService {
 
             Integer cura_number = (Integer) body.get("cura_number");
 
-            return userDao.findUserByCura_number(cura_number);
+            return userDao.getOne(cura_number);
         } catch (Exception ex) {
             return null;
         }
@@ -95,7 +94,7 @@ public class UserServiceImpl implements UserService {
      * @return
      */
     public User checkUser(Integer cura_number, String password) {
-        User user = userDao.findUserByCura_number(cura_number);
+        User user = userDao.getOne(cura_number);
 
         if (user == null) return null;
 
@@ -103,11 +102,4 @@ public class UserServiceImpl implements UserService {
             return user;
         } else return null;
     }
-
-
-    public User getUser(Integer cura_number) {
-        User user = userDao.findUserByCura_number(cura_number);
-        return user;
-    }
-
 }

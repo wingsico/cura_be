@@ -37,44 +37,44 @@ public class GlobalExceptionHandler {
      *
      */
     @ExceptionHandler(MissingServletRequestParameterException.class)
-    public void handleMissingServletRequestParameterException(MissingServletRequestParameterException e) {
+    public Object handleMissingServletRequestParameterException(MissingServletRequestParameterException e) {
         logger.error("缺少请求参数:{}", e.getMessage());
-        jsonResult.failed(400, "缺少请求参数", HttpStatus.BAD_REQUEST);
+        return jsonResult.failed(400, "缺少请求参数", HttpStatus.BAD_REQUEST);
     }
 
     /**
      * 400 - Bad Request
      */
     @ExceptionHandler(HttpMessageNotReadableException.class)
-    public void handleHttpMessageNotReadableException(HttpMessageNotReadableException e) {
+    public Object handleHttpMessageNotReadableException(HttpMessageNotReadableException e) {
         logger.error("参数解析失败:{}", e.getMessage());
-        jsonResult.failed(400, "参数解析失败", HttpStatus.BAD_REQUEST);
+        return jsonResult.failed(400, "参数解析失败", HttpStatus.BAD_REQUEST);
     }
 
     /**
      * 400 - Bad Request
      */
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public void handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
+    public Object handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
         logger.error("参数验证失败:{}", e.getMessage());
         BindingResult result = e.getBindingResult();
         FieldError error = result.getFieldError();
         String code = error.getDefaultMessage();
         String message = String.format("%s", code);
-        jsonResult.failed(400, "参数验证失败" + message, HttpStatus.BAD_REQUEST);
+        return jsonResult.failed(400, "参数验证失败" + message, HttpStatus.BAD_REQUEST);
     }
 
     /**
      * 400 - Bad Request
      */
     @ExceptionHandler(BindException.class)
-    public void handleBindException(BindException e) {
+    public Object handleBindException(BindException e) {
         logger.error("参数绑定失败:{}", e.getMessage());
         BindingResult result = e.getBindingResult();
         FieldError error = result.getFieldError();
         String code = error.getDefaultMessage();
         String message = String.format("%s", code);
-        jsonResult.failed(400, "参数绑定失败" + message, HttpStatus.BAD_REQUEST);
+        return jsonResult.failed(400, "参数绑定失败" + message, HttpStatus.BAD_REQUEST);
     }
 
 
@@ -82,39 +82,39 @@ public class GlobalExceptionHandler {
      * 400 - Bad Request
      */
     @ExceptionHandler(ConstraintViolationException.class)
-    public void handleServiceException(ConstraintViolationException e) {
+    public Object handleServiceException(ConstraintViolationException e) {
         logger.error("参数验证失败:{}", e.getMessage());
         Set<ConstraintViolation<?>> violations = e.getConstraintViolations();
         ConstraintViolation<?> violation = violations.iterator().next();
         String message = violation.getMessage();
-        jsonResult.failed(400, "参数验证失败" + message, HttpStatus.BAD_REQUEST);
+        return jsonResult.failed(400, "参数验证失败" + message, HttpStatus.BAD_REQUEST);
     }
 
     /**
      * 400 - Bad Request
      */
     @ExceptionHandler(ValidationException.class)
-    public void handleValidationException(ValidationException e) {
+    public Object handleValidationException(ValidationException e) {
         logger.error("参数验证失败:{}", e.getMessage());
-        jsonResult.failed(400, "参数验证失败", HttpStatus.BAD_REQUEST);
+        return jsonResult.failed(400, "参数验证失败", HttpStatus.BAD_REQUEST);
     }
 
     /**
      * 405 - Method Not Allowed
      */
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
-    public void handleHttpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException e) {
+    public Object handleHttpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException e) {
         logger.error("不支持当前请求方法:{}", e.getMessage());
-        jsonResult.failed(405, "不支持当前请求方法", HttpStatus.METHOD_NOT_ALLOWED);
+        return jsonResult.failed(405, "不支持当前请求方法", HttpStatus.METHOD_NOT_ALLOWED);
     }
 
     /**
      * 415 - Unsupported Media Type
      */
     @ExceptionHandler(HttpMediaTypeNotSupportedException.class)
-    public void handleHttpMediaTypeNotSupportedException(Exception e) {
+    public Object handleHttpMediaTypeNotSupportedException(Exception e) {
         logger.error("不支持当前媒体类型:{}", e.getMessage());
-        jsonResult.failed(415, "不支持当前媒体类型", HttpStatus.UNSUPPORTED_MEDIA_TYPE);
+        return jsonResult.failed(415, "不支持当前媒体类型", HttpStatus.UNSUPPORTED_MEDIA_TYPE);
     }
 
     /**
@@ -122,8 +122,8 @@ public class GlobalExceptionHandler {
      */
     //@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(Exception.class)
-    public void handleException(Exception e) {
+    public Object handleException(Exception e) {
         logger.error("通用异常 :{}", e);
-        jsonResult.failed(500, e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        return jsonResult.failed(500, "通用异常" + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

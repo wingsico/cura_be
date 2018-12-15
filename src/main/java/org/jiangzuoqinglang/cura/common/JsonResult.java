@@ -11,6 +11,10 @@ import java.util.Map;
  *
  */
 public class JsonResult {
+
+    private int status;
+    private String message;
+    private Object data;
     /**
      * 失败时返回json数据
      *

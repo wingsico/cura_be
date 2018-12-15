@@ -8,5 +8,4 @@ import java.util.List;
 
 @Repository
 public interface UserDao extends JpaRepository<User, Integer> {
-    User findUserByCura_number(Integer cura_number);
 }
